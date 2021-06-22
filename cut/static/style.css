@@ -1,0 +1,114 @@
+*{
+    font-family: 'Poppins', sans-serif;
+}
+.content{
+    padding-top: 17%;
+    margin-left: 0;
+    margin-right: 0;
+    margin: auto;
+    /* display: table; */
+    width: 80%;
+   
+}
+.addressbar{
+    width: 80%;
+    height: 40px !important;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 10px rgba(39, 39, 39, 0.8);
+    margin-left: 10px;
+    padding-left: 10px;
+}
+body{
+    background-image: url('/static/back.jpg');
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+.submit{
+    width: 15%;
+    float: right;
+    height: 40px !important;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 10px rgba(39, 39, 39, 0.8);
+    background-color: #F2637E;
+    color: white;
+}
+.submit:hover{
+    background-color: rgb(235, 113, 135);
+}
+h1,h2{
+    text-align: center;
+    color: white;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+h1{
+    font-size: 64px !important;
+    text-shadow: black 3px 3px;
+}
+h2{
+    text-shadow: black 3px 3px;
+    padding-top: 25px;
+}
+
+@media (max-width: 890px){
+    h1{
+        font-size: 52px !important;
+        padding-top: 75px !important;
+    }
+    .addressbar{
+        width: 100%;
+    }
+    body{
+        background-repeat:repeat-y;
+    }
+    h2{
+        padding-top: 75px;
+    }
+    .submit{
+        margin-top: 12px;
+        margin-bottom: 12px;
+        
+        margin-left: 10px !important;
+        width: 100%;
+        float: none !important;
+    }
+}
+
+.box{
+    width: 100%;
+    height: auto;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+.inbox{
+    padding-top: 100px;
+}
+h3{
+    text-align: center !important;
+    font-size: 50px !important;
+    padding-bottom: 20px;
+}
+p{
+    text-align: center;
+    font-size: 40px;
+}
+@media (max-width: 580px){
+    .box{
+        margin-right: 5px !important;
+        margin-left: 5px !important;
+    }
+    h3{
+        font-size: 25px;
+    }
+    p{
+        font-size: 20px;
+    }
+}
+a {
+    color:#F2637E !important ;
+}
