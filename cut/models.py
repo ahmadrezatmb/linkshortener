@@ -4,7 +4,7 @@ from django.db import models
 
 class UrlModels(models.Model):
     url_before_cut = models.URLField()
-    visited = models.IntegerField()
+    number_of_visitors = models.IntegerField()
     url_after_cut  = models.CharField(max_length=200)
 
     def __str__(self):
