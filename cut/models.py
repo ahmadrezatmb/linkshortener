@@ -8,4 +8,4 @@ class UrlModels(models.Model):
     url_after_cut  = models.CharField(max_length=200)
 
     def __str__(self):
-        return f'{self.urlbeforecut} to {self.urlaftercut}'
+        return f'{self.url_before_cut} to {self.url_after_cut}'
