@@ -22,7 +22,7 @@
                 <form action="{% url 'aftercut' %}" method="POST">
                     {% csrf_token %}
                     {{form}}
-                    <input type="submit" class="submit" id="submit">
+                    <input type="submit" value="shorten" class="submit" id="submit">
                 </form>
                 <h6 id="error"></h6>
                 <h2>As short as summer</h2>

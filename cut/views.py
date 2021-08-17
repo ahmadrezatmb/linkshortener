@@ -21,29 +21,29 @@ def aftercut(request):
             
             if 'https://' in url:
                 for ad in obj:
-                    if  ad.urlbeforecut == url  :
-                        link = ad.urlaftercut
+                    if  ad.url_before_cut == url  :
+                        link = ad.url_after_cut
                         return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
                 url2 = url.replace('https://' , 'http://')
                 for ad in obj:
-                    if  ad.urlbeforecut == url2  :
-                        link = ad.urlaftercut
+                    if  ad.url_before_cut == url2  :
+                        link = ad.url_after_cut
                         return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
             elif 'http://' in url:
                 
                 for ad in obj:
-                    if  ad.urlbeforecut == url  :
-                        link = ad.urlaftercut
+                    if  ad.url_before_cut == url  :
+                        link = ad.url_after_cut
                         return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
                 url2 = url.replace('http://' , 'https://')
                 for ad in obj:
-                    if  ad.urlbeforecut == url2  :
-                        link = ad.urlaftercut
+                    if  ad.url_before_cut == url2  :
+                        link = ad.url_after_cut
                         return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
             else:
                 for ad in obj:
-                    if ad.urlbeforecut == 'http://' + url or ad.urlbeforecut == 'https://' + url :
-                        link = ad.urlaftercut
+                    if ad.url_before_cut == 'http://' + url or ad.url_before_cut == 'https://' + url :
+                        link = ad.url_after_cut
                         return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
             if("https://" in url or "http://" in url):
                 if(len(url) >=4):
@@ -53,7 +53,7 @@ def aftercut(request):
             else:
                 link = "http://" + url
                 firstchar = url[0]
-            set = UrlModels.objects.create(urlbeforecut = link , visited = 0 , urlaftercut = firstchar+str(count+1))
+            set = UrlModels.objects.create(url_before_cut = link , visited = 0 , url_after_cut = firstchar+str(count+1))
             set.save()
         link =  firstchar+str(count+1)
     arg = {'link' : link , 'error': error , 'base' : address , 'view' : 'refresh to see'}
@@ -66,12 +66,12 @@ def beforcut(request):
 
 def rd(request , number):
     
-        #hadaf = UrlModels.objects.get(urlaftercut = number)
-    hadaf = get_object_or_404(UrlModels, urlaftercut = number)
+        #hadaf = UrlModels.objects.get(url_after_cut = number)
+    hadaf = get_object_or_404(UrlModels, url_after_cut = number)
     
     hadaf.visited = hadaf.visited + 1
     hadaf.save()
-    return redirect(hadaf.urlbeforecut)
+    return redirect(hadaf.url_before_cut)
 def all(request):
     all = UrlModels.objects.all()
     arg = {'all' : all}
