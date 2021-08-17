@@ -21,7 +21,7 @@
                 <h3>Well diet!</h3>
                 <p>
                 <span>New link : </span>
-                <a target="blank" href="{{link}}">{{base}}{{link}}</a>
+                <a target="blank" href="{{link}}">https://{{ request.get_host }}/{{link}}</a>
                 </p>
                 <p><span>views : </span>{{view}}</p>
                 <p><a href="{% url 'home' %}">Try again!</a></p>

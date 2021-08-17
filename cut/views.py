@@ -9,10 +9,9 @@ from django.shortcuts import get_object_or_404
 
 # form handling to cut the link !
 def aftercut(request):
-    error = ''
+    error_message = ''
     link = ''
     first_char = ''
-    address = request.build_absolute_uri('/')
     all_addresses = UrlModels.objects.all()
     count = all_addresses.count()
     if request.method == 'POST':
@@ -22,60 +21,60 @@ def aftercut(request):
             # check if link is given before or not :
             
             if  url.startswith('https://'):
-                for sample_address in all_addresses:
-                    if  sample_address.url_before_cut == url  :
-                        link = sample_address.url_after_cut
-                        return render(
-                                    request,
-                                    'after.html',
-                                    {
-                                        'link' : link,
-                                        'error': error,
-                                        'base' : address,
-                                        'view' : sample_address.number_of_visitors
-                                    })
-
+                this_url_in_db = UrlModels.objects.filter(url_before_cut=url)
+                if this_url_in_db.count() != 0 :
+                    context = {
+                        'link' : link,
+                        'error_message': error_message,
+                        'view' : this_url_in_db.get().number_of_visitors
+                    }
+                    return render(
+                                request,
+                                'after.html',
+                                context
+                                )
+       
                 url2 = url.replace('https://','http://')
-                for sample_address in all_addresses:
-                    if  sample_address.url_before_cut == url2  :
-                        link = sample_address.url_after_cut
-                        return render(
-                                    request, 
-                                    'after.html',
-                                    {
-                                        'link' : link,
-                                        'error': error,
-                                        'base' : address,
-                                        'view' : sample_address.number_of_visitors
-                                    })
+                this_url_in_db = UrlModels.objects.filter(url_before_cut=url2)
+                if this_url_in_db.count() != 0 :
+                    context = {
+                        'link' : link,
+                        'error_message': error_message,
+                        'view' : this_url_in_db.get().number_of_visitors
+                    }
+                    return render(
+                                request,
+                                'after.html',
+                                context
+                                )
 
 
             elif url.startswith('http://'):
-                for sample_address in all_addresses:
-                    if  sample_address.url_before_cut == url  :
-                        link = sample_address.url_after_cut
-                        return render(
-                                    request, 
-                                    'after.html', 
-                                    {
-                                        'link' : link, 
-                                        'error': error, 
-                                        'base' : address, 
-                                        'view' : sample_address.number_of_visitors
-                                    })
+                this_url_in_db = UrlModels.objects.filter(url_before_cut=url)
+                if this_url_in_db.count() != 0 :
+                    context = {
+                        'link' : link,
+                        'error_message': error_message,
+                        'view' : this_url_in_db.get().number_of_visitors
+                    }
+                    return render(
+                                request,
+                                'after.html',
+                                context
+                                )
                 url2 = url.replace('http://', 'https://')
-                for sample_address in all_addresses:
-                    if  sample_address.url_before_cut == url2  :
-                        link = sample_address.url_after_cut
-                        return render(
-                                    request, 
-                                    'after.html', 
-                                    {
-                                        'link' : link, 
-                                        'error': error, 
-                                        'base' : address, 
-                                        'view' : sample_address.number_of_visitors
-                                    })
+                this_url_in_db = UrlModels.objects.filter(url_before_cut=url)
+                if this_url_in_db.count() != 0 :
+                    context = {
+                        'link' : link,
+                        'error_message': error_message,
+                        'view' : this_url_in_db.get().number_of_visitors
+                    }
+                    return render(
+                                request,
+                                'after.html',
+                                context
+                                )
             else:
                 for sample_address in all_addresses:
                     if (sample_address.url_before_cut == 'http://' + url or 
@@ -87,8 +86,7 @@ def aftercut(request):
                                     'after.html', 
                                     {
                                         'link' : link, 
-                                        'error': error, 
-                                        'base' : address, 
+                                        'error_message': error_message, 
                                         'view' : sample_address.number_of_visitors
                                     })
 
@@ -107,8 +105,7 @@ def aftercut(request):
         link = first_char+str(count+1)
     arg = {
         'link' : link, 
-        'error': error, 
-        'base' : address, 
+        'error_message': error_message, 
         'view' : 'refresh to see'
         }
     return render(request, 'after.html', arg)
