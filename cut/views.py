@@ -3,13 +3,14 @@ from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import UserUrlInput
 from .models import UrlModels
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 
 def aftercut(request):
     error = ""
     link = ""
-    firstchar = ""
+    first_char = ""
     address = request.build_absolute_uri('/')
     all_addresses = UrlModels.objects.all()
     count = all_addresses.count()
@@ -23,48 +24,58 @@ def aftercut(request):
                 for sample_address in all_addresses:
                     if  sample_address.url_before_cut == url  :
                         link = sample_address.url_after_cut
-                        return render(request ,
-                                     'after.html' , 
-                                     {
-                                         'link' : link ,
-                                         'error': error ,
-                                         'base' : address ,
-                                         'view' : sample_address.visited
-                                     }
-                                     )
-                                     
+                        return render(
+                                request ,
+                                'after.html' , 
+                                {
+                                    'link' : link ,
+                                    'error': error ,
+                                    'base' : address ,
+                                    'view' : sample_address.visited
+                                }
+                                    )
+
                 url2 = url.replace('https://' , 'http://')
-                for ad in all_addresses:
-                    if  ad.url_before_cut == url2  :
-                        link = ad.url_after_cut
-                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
+                for sample_address in all_addresses:
+                    if  sample_address.url_before_cut == url2  :
+                        link = sample_address.url_after_cut
+                        return render(
+                            request , 
+                            'after.html' , 
+                            {
+                                'link' : link , 
+                                'error': error , 
+                                'base' : address , 
+                                'view' : sample_address.visited
+                            }
+                                )
+
+
             elif url.startswith('http://'):
-                
-                for ad in all_addresses:
-                    if  ad.url_before_cut == url  :
-                        link = ad.url_after_cut
-                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
+                for sample_address in all_addresses:
+                    if  sample_address.url_before_cut == url  :
+                        link = sample_address.url_after_cut
+                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : sample_address.visited})
                 url2 = url.replace('http://' , 'https://')
-                for ad in all_addresses:
-                    if  ad.url_before_cut == url2  :
-                        link = ad.url_after_cut
-                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
+                for sample_address in all_addresses:
+                    if  sample_address.url_before_cut == url2  :
+                        link = sample_address.url_after_cut
+                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : sample_address.visited})
             else:
-                for ad in all_addresses:
-                    if ad.url_before_cut == 'http://' + url or ad.url_before_cut == 'https://' + url :
-                        link = ad.url_after_cut
-                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : ad.visited})
-            if("https://" in url or "http://" in url):
-                if(len(url) >=4):
-                    if url[0:4] == "http" :
-                        link = url 
-                        firstchar = url[9]   
+                for sample_address in all_addresses:
+                    if sample_address.url_before_cut == 'http://' + url or sample_address.url_before_cut == 'https://' + url :
+                        link = sample_address.url_after_cut
+                        return render(request , 'after.html' , {'link' : link , 'error': error , 'base' : address , 'view' : sample_address.visited})
+            
+            if( url.startswith('http://') or  url.startswith('https://')): 
+                link = url 
+                first_char = url[9]   
             else:
                 link = "http://" + url
-                firstchar = url[0]
-            set = UrlModels.objects.create(url_before_cut = link , visited = 0 , url_after_cut = firstchar+str(count+1))
+                first_char = url[0]
+            set = UrlModels.objects.create(url_before_cut = link , visited = 0 , url_after_cut = first_char+str(count+1))
             set.save()
-        link =  firstchar+str(count+1)
+        link =  first_char+str(count+1)
     arg = {'link' : link , 'error': error , 'base' : address , 'view' : 'refresh to see'}
     return render(request , 'after.html' , arg)
 
@@ -75,12 +86,14 @@ def beforcut(request):
 
 def rd(request , number):
     
-        #hadaf = UrlModels.objects.get(url_after_cut = number)
-    hadaf = get_object_or_404(UrlModels, url_after_cut = number)
+    this_url = get_object_or_404(UrlModels, url_after_cut = number)
     
-    hadaf.visited = hadaf.visited + 1
-    hadaf.save()
-    return redirect(hadaf.url_before_cut)
+    this_url.visited = this_url.visited + 1
+    this_url.save()
+    return redirect(this_url.url_before_cut)
+
+
+@login_required
 def all(request):
     all = UrlModels.objects.all()
     arg = {'all' : all}
